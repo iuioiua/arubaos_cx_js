@@ -1,69 +1,74 @@
-function getSetCookie(headers: Headers): string {
+export function getSetCookie(headers: Headers): string {
   return headers.get("set-cookie")!
-    .split(";")[0];
+    .split(", ")
+    .flatMap((cookie) => cookie.split("; ")[0])
+    .join("; ");
 }
 
 export interface ClientInit {
-  origin: string;
+  host: string;
   version?: "v1" | "v10.04" | "v10.08";
   username?: string;
   password?: string;
 }
 
 export class Client {
-  #origin: string;
-  #version: ClientInit["version"];
   #username: string;
   #password: string;
+  #baseURL: string;
   #cookie?: string;
 
-  constructor({ origin, version, username, password }: ClientInit) {
-    this.#origin = origin;
-    this.#version = version ?? "v1";
-    this.#username = username ?? "admin";
-    this.#password = password ?? "";
+  constructor(init: ClientInit) {
+    const version = init.version ??
+      Deno.env.get("ARUBAOS_CX_VERSION") ?? "v1";
+    this.#username = init.username ??
+      Deno.env.get("ARUBAOS_CX_USERNAME") ?? "admin";
+    this.#password = init.password ??
+      Deno.env.get("ARUBAOS_CX_PASSWORD") ?? "";
+    this.#baseURL = "https://" + init.host + "/rest/" + version;
   }
 
-  request(path: string, init?: RequestInit): Promise<Response> {
-    const request = new Request(
-      this.#origin + "/rest/" + this.#version + path,
-      init,
-    );
+  async request(path: string, init?: RequestInit): Promise<Response> {
+    const request = new Request(this.#baseURL + path, init);
     request.headers.set("cookie", this.#cookie!);
-    return fetch(request);
+    return await fetch(request);
   }
 
   async login(): Promise<void> {
-    const { body, ok, headers } = await this.request("/login", {
+    const response = await this.request("/login", {
       method: "POST",
       body: new URLSearchParams({
         username: this.#username,
         password: this.#password,
       }),
     });
-    await body?.cancel();
-    console.assert(ok, "Login failed");
-    this.#cookie = getSetCookie(headers);
+    await response.body?.cancel();
+    console.assert(response.ok, "Login failed");
+    this.#cookie = getSetCookie(response.headers);
   }
 
   async logout(): Promise<void> {
-    const { body, ok } = await this.request("/login", {
+    const response = await this.request("/login", {
       method: "POST",
     });
-    await body?.cancel();
-    console.assert(ok, "Logout failed");
+    await response.body?.cancel();
+    console.assert(response.ok, "Logout failed");
     this.#cookie = undefined;
+  }
+
+  async requestOnce(path: string, init?: RequestInit): Promise<Response> {
+    await this.login();
+    const response = await this.request(path, init);
+    await this.logout();
+    return response;
   }
 }
 
-export async function request(
+export async function requestOnce(
   clientInit: ClientInit,
   path: string,
   init?: RequestInit,
 ): Promise<Response> {
   const client = new Client(clientInit);
-  await client.login();
-  const response = await client.request(path, init);
-  await client.logout();
-  return response;
+  return await client.requestOnce(path, init);
 }
