@@ -1,3 +1,6 @@
+import { assert } from "./deps.ts";
+
+/** Turns a set-cookie header into a useable cookie header value */
 function getSetCookie(headers: Headers): string {
   return headers.get("set-cookie")!
     .split(", ")
@@ -42,17 +45,15 @@ export class Client {
         password: this.#password,
       }),
     });
-    await response.body?.cancel();
-    console.assert(response.ok, "Login failed");
+    assert(response.ok, await response.text());
     this.#cookie = getSetCookie(response.headers);
   }
 
   async logout(): Promise<void> {
-    const response = await this.request("/login", {
+    const response = await this.request("/logout", {
       method: "POST",
     });
-    await response.body?.cancel();
-    console.assert(response.ok, "Logout failed");
+    assert(response.ok, await response.text());
     this.#cookie = undefined;
   }
 
