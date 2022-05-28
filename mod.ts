@@ -1,4 +1,4 @@
-export function getSetCookie(headers: Headers): string {
+function getSetCookie(headers: Headers): string {
   return headers.get("set-cookie")!
     .split(", ")
     .flatMap((cookie) => cookie.split("; ")[0])
