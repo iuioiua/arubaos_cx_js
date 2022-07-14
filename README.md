@@ -3,6 +3,8 @@
 Authenticate and interact with the ArubaOS-CX REST API using any
 [Deno](https://deno.land/).
 
+> Disclaimer: this is not an official Aruba software project.
+
 ## Usage
 
 ### Parameters
@@ -11,7 +13,7 @@ Each parameter, except for `host`, is defined in the following order of
 precedence:
 
 1. If defined within the function or class initialisation
-2. If defined by its environmental variable
+2. If defined by its Environment variable
 3. Its default value
 
 The following are the parameters for `Client`.
@@ -23,11 +25,11 @@ The following are the parameters for `Client`.
 | `username` | `ARUBAOS_CX_USERNAME`  | `admin`        | Login username for the REST API session |
 | `password` | `ARUBAOS_CX_PASSWORD`  | (empty string) | Login password for the REST API session |
 
-### Environmental variables
+### Environment variables
 
-> Environmental variables are used by default to discourage explicitly defining
-> confidential credentials within scripts. Many have made the mistake of
-> commiting code containing such secrets.
+Environment variables are used by default to discourage explicitly defining
+confidential credentials within scripts. Many have made the mistake of commiting
+code containing such secrets.
 
 ### One request
 
