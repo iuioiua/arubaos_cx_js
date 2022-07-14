@@ -31,14 +31,18 @@ export class Client {
     this.#baseURL = "https://" + init.host + "/rest/" + version;
   }
 
-  async request(path: string, init?: RequestInit): Promise<Response> {
+  request(path: string, init?: RequestInit): Request {
     const request = new Request(this.#baseURL + path, init);
     request.headers.set("cookie", this.#cookie!);
-    return await fetch(request);
+    return request;
+  }
+
+  async fetch(path: string, init?: RequestInit): Promise<Response> {
+    return await fetch(this.request(path, init));
   }
 
   async login(): Promise<void> {
-    const response = await this.request("/login", {
+    const response = await this.fetch("/login", {
       method: "POST",
       body: new URLSearchParams({
         username: this.#username,
@@ -50,26 +54,26 @@ export class Client {
   }
 
   async logout(): Promise<void> {
-    const response = await this.request("/logout", {
+    const response = await this.fetch("/logout", {
       method: "POST",
     });
     assert(response.ok, await response.text());
     this.#cookie = undefined;
   }
 
-  async requestOnce(path: string, init?: RequestInit): Promise<Response> {
+  async fetchOnce(path: string, init?: RequestInit): Promise<Response> {
     await this.login();
-    const response = await this.request(path, init);
+    const response = await this.fetch(path, init);
     await this.logout();
     return response;
   }
 }
 
-export async function requestOnce(
+export async function fetchOnce(
   clientInit: ClientInit,
   path: string,
   init?: RequestInit,
 ): Promise<Response> {
   const client = new Client(clientInit);
-  return await client.requestOnce(path, init);
+  return await client.fetchOnce(path, init);
 }
