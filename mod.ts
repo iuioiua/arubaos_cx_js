@@ -8,6 +8,7 @@ function getSetCookie(headers: Headers): string {
     .join("; ");
 }
 
+/** Client initialisation parameters. */
 export interface ClientInit {
   /** Switch IP address or host */
   host: string;
@@ -19,6 +20,7 @@ export interface ClientInit {
   password?: string;
 }
 
+/** Contains methods for logging in/out and making authenticated requests. */
 export class Client {
   #username: string;
   #password: string;
@@ -47,7 +49,7 @@ export class Client {
     return await fetch(this.request(path, init));
   }
 
-  /** Logs the user in. */
+  /** Logs the user in and stores the authentication cookie. */
   async login(): Promise<void> {
     const response = await this.fetch("/login", {
       method: "POST",
@@ -60,7 +62,7 @@ export class Client {
     this.#cookie = getSetCookie(response.headers);
   }
 
-  /** Logs the user out. */
+  /** Logs the user out and removes the authentication cookie. */
   async logout(): Promise<void> {
     const response = await this.fetch("/logout", {
       method: "POST",

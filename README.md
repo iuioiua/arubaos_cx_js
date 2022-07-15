@@ -44,7 +44,8 @@ precedence:
 
 1. If defined within the function or class initialisation
 2. If defined by its [environment variable](#environment-variables)
-3. Its default value (see documentation)
+3. Its default value (see
+   [documentation](doc.deno.land/https://deno.land/x/arubaos_cx))
 
 ### Environment variables
 
@@ -54,7 +55,8 @@ code containing such secrets.
 
 ### Documentation
 
-Check out the full documentation here.
+Check out the full documentation
+[here](doc.deno.land/https://deno.land/x/arubaos_cx).
 
 ## Principles
 
