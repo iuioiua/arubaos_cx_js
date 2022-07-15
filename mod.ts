@@ -1,6 +1,6 @@
 import { assert } from "./deps.ts";
 
-/** Turns a set-cookie header into a useable cookie header value */
+/** Turns a set-cookie header into a useable cookie header string value. */
 function getSetCookie(headers: Headers): string {
   return headers.get("set-cookie")!
     .split(", ")
@@ -9,9 +9,13 @@ function getSetCookie(headers: Headers): string {
 }
 
 export interface ClientInit {
+  /** Switch IP address or host */
   host: string;
+  /** Switch REST API version. Defaults to `v1`. */
   version?: "v1" | "v10.04" | "v10.08";
+  /** Switch login username. Defaults to `admin`. */
   username?: string;
+  /** Switch login password. Defaults to an empty string. */
   password?: string;
 }
 
@@ -31,16 +35,19 @@ export class Client {
     this.#baseURL = "https://" + init.host + "/rest/" + version;
   }
 
+  /** Creates an authenticated request. */
   request(path: string, init?: RequestInit): Request {
     const request = new Request(this.#baseURL + path, init);
     request.headers.set("cookie", this.#cookie!);
     return request;
   }
 
+  /** Performs an authenticated request. */
   async fetch(path: string, init?: RequestInit): Promise<Response> {
     return await fetch(this.request(path, init));
   }
 
+  /** Logs the user in. */
   async login(): Promise<void> {
     const response = await this.fetch("/login", {
       method: "POST",
@@ -53,6 +60,7 @@ export class Client {
     this.#cookie = getSetCookie(response.headers);
   }
 
+  /** Logs the user out. */
   async logout(): Promise<void> {
     const response = await this.fetch("/logout", {
       method: "POST",
@@ -61,6 +69,7 @@ export class Client {
     this.#cookie = undefined;
   }
 
+  /** Performs a request inbetween automatic login/logout. */
   async fetchOnce(path: string, init?: RequestInit): Promise<Response> {
     await this.login();
     const response = await this.fetch(path, init);
@@ -69,6 +78,7 @@ export class Client {
   }
 }
 
+/** Creates a client and performs a request inbetween automatic login/logout. */
 export async function fetchOnce(
   clientInit: ClientInit,
   path: string,
