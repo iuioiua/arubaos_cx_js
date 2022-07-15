@@ -1,6 +1,6 @@
 # arubaos_cx_js
 
-Authenticate and interact with the ArubaOS-CX REST API using
+Authenticate and interact with the [ArubaOS-CX REST API](https://developer.arubanetworks.com/aruba-aoscx/docs) using
 [Deno](https://deno.land/).
 
 > Disclaimer: this is not an official Aruba software project.
