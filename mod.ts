@@ -56,7 +56,9 @@ export class Client {
       body: new URLSearchParams({
         username: this.#username,
         password: this.#password,
-      }),
+    });
+    const response = await this.fetch("/login?" + params, {
+      method: "POST",
     });
     assert(response.ok, await response.text());
     this.#cookie = getSetCookie(response.headers);
