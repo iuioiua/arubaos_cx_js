@@ -24,7 +24,7 @@ export interface ClientInit {
 export class Client {
   #username: string;
   #password: string;
-  #baseURL: string;
+  #baseURL: URL;
   #cookie?: string;
 
   constructor(init: ClientInit) {
@@ -34,7 +34,7 @@ export class Client {
       Deno.env.get("ARUBAOS_CX_USERNAME") ?? "admin";
     this.#password = init.password ??
       Deno.env.get("ARUBAOS_CX_PASSWORD") ?? "";
-    this.#baseURL = "https://" + init.host + "/rest/" + version;
+    this.#baseURL = new URL("/rest/" + version, "https://" + init.host);
   }
 
   /** Creates an authenticated request. */
