@@ -10,7 +10,7 @@ function getSetCookie(headers: Headers): string {
 
 /** Client initialisation parameters. */
 export interface ClientInit {
-  /** Switch IP address or host */
+  /** Switch IP address or host. */
   host: string;
   /** Switch REST API version. Defaults to `v1`. */
   version?: "v1" | "v10.04" | "v10.08";
