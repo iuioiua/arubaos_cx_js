@@ -51,11 +51,9 @@ export class Client {
 
   /** Logs the user in and stores the authentication cookie. */
   async login(): Promise<void> {
-    const response = await this.fetch("/login", {
-      method: "POST",
-      body: new URLSearchParams({
-        username: this.#username,
-        password: this.#password,
+    const params = new URLSearchParams({
+      username: this.#username,
+      password: this.#password,
     });
     const response = await this.fetch("/login?" + params, {
       method: "POST",
