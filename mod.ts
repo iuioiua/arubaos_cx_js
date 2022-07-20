@@ -40,7 +40,9 @@ export class Client {
   /** Creates an authenticated request. */
   request(path: string, init?: RequestInit): Request {
     const request = new Request(this.#baseURL + path, init);
-    request.headers.set("cookie", this.#cookie!);
+    if (this.#cookie) {
+      request.headers.set("cookie", this.#cookie!);
+    }
     return request;
   }
 
