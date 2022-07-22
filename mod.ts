@@ -13,7 +13,7 @@ export interface ClientInit {
   /** Switch IP address or host. */
   host: string;
   /** Switch REST API version. Defaults to `v1`. */
-  version?: "v1" | "v10.04" | "v10.08";
+  version?: "v1" | "v10.04" | "v10.08" | "v10.09" | "v10.10" | "latest";
   /** Switch login username. Defaults to `admin`. */
   username?: string;
   /** Switch login password. Defaults to an empty string. */
