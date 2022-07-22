@@ -12,7 +12,7 @@ function getSetCookie(headers: Headers): string {
 export interface ClientInit {
   /** Switch IP address or host. */
   host: string;
-  /** Switch REST API version. Defaults to `v1`. */
+  /** Switch REST API version. Defaults to `latest`. */
   version?: "v1" | "v10.04" | "v10.08" | "v10.09" | "v10.10" | "latest";
   /** Switch login username. Defaults to `admin`. */
   username?: string;
@@ -29,7 +29,7 @@ export class Client {
 
   constructor(init: ClientInit) {
     const version = init.version ??
-      Deno.env.get("ARUBAOS_CX_VERSION") ?? "v1";
+      Deno.env.get("ARUBAOS_CX_VERSION") ?? "latest";
     this.#username = init.username ??
       Deno.env.get("ARUBAOS_CX_USERNAME") ?? "admin";
     this.#password = init.password ??
