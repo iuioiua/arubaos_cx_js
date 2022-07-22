@@ -60,6 +60,7 @@ export class Client {
     const response = await this.fetch("/login?" + params, {
       method: "POST",
     });
+    /** Ensures authentication succeeded. If not, prints the provided reason. */
     assert(response.ok, await response.text());
     this.#cookie = getSetCookie(response.headers);
   }
@@ -69,6 +70,7 @@ export class Client {
     const response = await this.fetch("/logout", {
       method: "POST",
     });
+    /** Ensures deauthentication succeeded. If not, prints the provided reason. */
     assert(response.ok, await response.text());
     this.#cookie = undefined;
   }
