@@ -38,7 +38,7 @@ export class Client {
   }
 
   /** Creates an authenticated request. */
-  request(path: string, init?: RequestInit): Request {
+  #request(path: string, init?: RequestInit): Request {
     const request = new Request(this.#baseURL + path, init);
     if (this.#cookie) {
       request.headers.set("cookie", this.#cookie!);
@@ -48,7 +48,7 @@ export class Client {
 
   /** Performs an authenticated request. */
   async fetch(path: string, init?: RequestInit): Promise<Response> {
-    return await fetch(this.request(path, init));
+    return await fetch(this.#request(path, init));
   }
 
   /** Logs the user in and stores the authentication cookie. */
