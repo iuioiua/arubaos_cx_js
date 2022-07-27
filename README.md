@@ -2,7 +2,12 @@
 
 Authenticate and interact with the
 [ArubaOS-CX REST API](https://developer.arubanetworks.com/aruba-aoscx/docs)
-using [Deno](https://deno.land/).
+using [Deno](https://deno.land/). Design principles:
+
+- Must be fundamentally simple
+- Based on and has a similar API to the
+  [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
+- Built for scale and reduced time required to automate tasks
 
 > Disclaimer: this is not an official Aruba software project.
 
@@ -54,25 +59,16 @@ Environment variables are used by default to discourage explicitly defining
 confidential credentials within scripts. Many have made the mistake of commiting
 code containing such secrets.
 
-### Documentation
+## Documentation
 
 Check out the full documentation
 [here](https://doc.deno.land/https://deno.land/x/arubaos_cx).
 
-## Principles
-
-- Designed to be fundamentally simple
-- Based on and has a similar API to the
-  [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
-- Encourages secure use of secrets via environmental variables
-- Aims to be versatile (likely one day supporting Deno,
-  [NodeJS](https://nodejs.org) and the browser) and maximise work velocity
-
 ## Testing
-
-> Note: Tests must run with environmental variables defined, including an extra
-> `ARUBAOS_CX_HOST`.
 
 ```bash
 ARUBAOS_CX_HOST=10.20.30.40 ARUBAOS_CX_PASSWORD=password deno task test
 ```
+
+> Note: Tests must run with environmental variables defined, including an extra
+> `ARUBAOS_CX_HOST`.
