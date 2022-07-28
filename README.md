@@ -13,6 +13,9 @@ using [Deno](https://deno.land/). Design principles:
 
 ## Usage
 
+Must be run with the `--allow-run`, `--allow-env` and possibly the
+`--unsafely-ignore-certificate-error` environment variables.
+
 ### One request
 
 Logs the user in, performs a HTTP request, then logs out, returning the
