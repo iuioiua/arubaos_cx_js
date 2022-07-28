@@ -36,7 +36,7 @@ export interface ClientInit {
 
 /**
  * Contains methods for logging in/out and making authenticated requests.
- * Recommended for multiple requests
+ * Recommended for multiple requests.
  *
  * Example:
  * ```ts
