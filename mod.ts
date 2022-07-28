@@ -15,15 +15,39 @@ function getSetCookie(headers: Headers): string {
 export interface ClientInit {
   /** Switch IP address or host. */
   host: string;
-  /** Switch REST API version. Defaults to `latest`. */
+  /**
+   * Switch REST API version.
+   * If not defined in-code, defaults to `ARUBAOS_CX_VERSION` environment variable.
+   * If not defined as an environment variable, defaults to `latest`.
+   */
   version?: "v1" | "v10.04" | "v10.08" | "v10.09" | "v10.10" | "latest";
-  /** Switch login username. Defaults to `admin`. */
+  /**
+   * Switch login username.
+   * If not defined in-code, defaults to `ARUBAOS_CX_USERNAME` environment variable.
+   * If not defined as an environment variable, defaults to `admin`.
+   */
   username?: string;
-  /** Switch login password. Defaults to an empty string. */
+  /**
+   * Switch login password.
+   * If not defined in-code, defaults to `ARUBAOS_CX_PASSWORD` environment variable.
+   * If not defined as an environment variable, defaults to an empty string. */
   password?: string;
 }
 
-/** Contains methods for logging in/out and making authenticated requests. */
+/**
+ * Contains methods for logging in/out and making authenticated requests.
+ * Recommended for multiple requests
+ *
+ * Example:
+ * ```ts
+ * const client = new Client({ host: "10.20.30.40" });
+ * await client.login();
+ * const response1 = await client.fetch("/system");
+ * const response2 = await client.fetch("/firmware");
+ * ...
+ * await client.logout();
+ * ```
+ */
 export class Client {
   #username: string;
   #password: string;
@@ -87,7 +111,15 @@ export class Client {
   }
 }
 
-/** Creates a client and performs a request inbetween automatic login/logout. */
+/**
+ * Creates a client and performs a request inbetween automatic login/logout.
+ * Recommended for single requests.
+ *
+ * Example:
+ * ```ts
+ * const response = await fetchOnce({ host: "10.20.30.40" }, "/system");
+ * ```
+ */
 export async function fetchOnce(
   clientInit: ClientInit,
   path: string,

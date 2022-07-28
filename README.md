@@ -21,10 +21,7 @@ response. This is the easiest way to make a single request.
 ```ts
 import { fetchOnce } from "https://deno.land/x/arubaos_cx/mod.ts";
 
-const response = await fetchOnce({
-  host: "10.20.30.40",
-  version: "v10.08",
-}, "/system");
+const response = await fetchOnce({ host: "10.20.30.40" }, "/system");
 ```
 
 ### Multiple requests
@@ -32,10 +29,7 @@ const response = await fetchOnce({
 ```ts
 import { Client } from "https://deno.land/x/arubaos_cx/mod.ts";
 
-const client = new Client({
-  host: "10.20.30.40",
-  version: "v10.08",
-});
+const client = new Client({ host: "10.20.30.40" });
 await client.login();
 const response1 = await client.fetch("/system");
 const response2 = await client.fetch("/firmware");
@@ -57,7 +51,9 @@ precedence:
 
 Environment variables are used by default to discourage explicitly defining
 confidential credentials within scripts. Many have made the mistake of commiting
-code containing such secrets.
+code containing such secrets. See
+[documentation](https://doc.deno.land/https://deno.land/x/arubaos_cx) for more
+information.
 
 ## Documentation
 
