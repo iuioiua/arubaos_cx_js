@@ -1,5 +1,7 @@
 # arubaos_cx_js
 
+[![Docs](https://doc.deno.land/badge.svg)](https://doc.deno.land/https://deno.land/x/arubaos_cx)
+
 Authenticate and interact with the
 [ArubaOS-CX REST API](https://developer.arubanetworks.com/aruba-aoscx/docs)
 using [Deno](https://deno.land/). Design principles:
