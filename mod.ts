@@ -1,5 +1,8 @@
 import { assert } from "./deps.ts";
 
+/** Cookie header value attribute delimiter. */
+const ATTR_DELIM = "; ";
+
 /** Turns a set-cookie header into a useable cookie header string value. */
 function getSetCookie(headers: Headers): string {
   return [...headers.entries()]
