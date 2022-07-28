@@ -2,10 +2,10 @@ import { assert } from "./deps.ts";
 
 /** Turns a set-cookie header into a useable cookie header string value. */
 function getSetCookie(headers: Headers): string {
-  return headers.get("set-cookie")!
-    .split(", ")
-    .flatMap((cookie) => cookie.split("; ")[0])
-    .join("; ");
+  return [...headers.entries()]
+    .filter(([key]) => key === "set-cookie")
+    .map(([_, value]) => value.split(ATTR_DELIM)[0])
+    .join(ATTR_DELIM);
 }
 
 /** Client initialisation parameters. */
