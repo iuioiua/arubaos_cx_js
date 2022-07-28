@@ -30,7 +30,8 @@ export interface ClientInit {
   /**
    * Switch login password.
    * If not defined in-code, defaults to `ARUBAOS_CX_PASSWORD` environment variable.
-   * If not defined as an environment variable, defaults to an empty string. */
+   * If not defined as an environment variable, defaults to an empty string.
+   */
   password?: string;
 }
 
